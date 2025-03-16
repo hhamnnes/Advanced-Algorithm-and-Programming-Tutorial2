@@ -1,0 +1,80 @@
+
+#We input the list [6, 5, 3, 1, 8, 7, 2, 4]
+mergeSort(int[] list)
+
+    int[] listA
+    int[] listB
+
+    if list.length <= 1 then #This will be the base case
+        do return list;
+    end if
+
+    listA = list[0 : list.length / 2]
+    listB = list[list.length / 2 : list.length]
+
+    #This part will be the recursive splitting of the list.
+    #It will continue until the base case is reached.
+    listA = mergeSort(listA) #[6, 5, 3, 1] -> [6, 5] [3, 1] -> [6] [5] [3] [1]
+    listB = mergeSort(listB) #[8, 7, 2, 4] -> [8, 7] [2, 4] -> [8] [7] [2] [4]
+
+    #This part will be the recursive merging of the lists.
+    #At this point we will wait for each sub-list to be compared with the its other
+    #half. We need to imagine that within the the both input values for the merge method
+    #there are now being returned a merged list until we are left with the two original
+    #list A and B with their original contents just in a sorted order. 
+    return merge(listA, listB) 
+
+    #The merging will therefore work something like this:
+    #listA <- merge([5, 6], [1, 3]) <- [merge([6], [5])], [merge([3], [1])]
+    #listB <- merge([7, 8], [2, 4]) <- [merge([8], [7])], [merge([2], [4])]
+    #return merge([1, 3, 5, 6], [2, 4, 7, 8]) 
+    #Which ultimately will return the list [1, 2, 3, 4, 5, 6, 7, 8]
+
+    
+
+
+#I will here provide a walkthrough of the input [7, 8] and [2, 4].
+merge(int[] listA, int[] listB)
+    int[] mergedList = new Integer[listA.length + listB.length];
+        int a = 0, b = 0, m = 0;
+
+        #m is here used to keep track of what position in
+        #the new list we are at.
+
+        #This code will be the same logic as explained in step 3 in 
+        #the word document.
+        #In the walkthrough below, the prefix number will refer to what
+        #iteration we are at in the corresponding loop. 
+        while (a < listA.length && b < listB.length) {
+            #1: 0 < listA.length -> True AND 0 < listA.length -> True
+            #2: 0 < listA.length -> True AND 1 < listA.length -> True
+            #3: 0 < listA.length -> True AND 2 < listA.length -> False
+
+
+            if (listA[a] <= listB[b]) {
+                #1: 7 <= 2 -> False
+                #2: 7 <= 4 -> False
+                mergedList[m++] = listA[a++];
+            } else {
+                #1: mergedList = [2, , , ]
+                #2: mergedList = [2, 4, , ]
+                mergedList[m++] = listB[b++];
+            }
+        }
+
+        while (a < listA.length) {
+            #1: 0 < listA.length -> True
+            #2: 1 < listA.length -> True
+            #3: 1 < listA.length -> False
+            mergedList[m++] = listA[a++];
+            #1: mergedList = [2, 4, 7, ]
+            #1: mergedList = [2, 4, 7, 8]
+        }
+
+        while (b < listB.length) {
+            mergedList[m++] = listB[b++];
+        }
+
+        return mergedList;
+
+
