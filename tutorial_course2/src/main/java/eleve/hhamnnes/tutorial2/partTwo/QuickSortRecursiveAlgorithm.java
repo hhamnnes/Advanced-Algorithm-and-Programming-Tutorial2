@@ -21,6 +21,7 @@ public class QuickSortRecursiveAlgorithm implements IntListInIntListOutAlgorithm
 
         for (int i = 0; i < list.length; i++) {
             if (i == middleIndex) continue;
+            
             if (list[i] > pivot) {
                 high.add(list[i]);
             } else {
