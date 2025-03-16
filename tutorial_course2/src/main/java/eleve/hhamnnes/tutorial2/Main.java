@@ -12,7 +12,7 @@ public class Main {
         
         int scopeStart = 100;
         int scopeEnd = 1000;
-        int interval = 100;
+        int interval = 50;
 
         
         MergeSortRecursiveAlgorithm mergeSortRecursiveAlgorithm = new MergeSortRecursiveAlgorithm();

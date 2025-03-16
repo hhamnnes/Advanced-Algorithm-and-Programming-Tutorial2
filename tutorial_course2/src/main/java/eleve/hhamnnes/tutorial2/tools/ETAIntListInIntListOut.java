@@ -5,7 +5,6 @@ import isep.eleve.hamnnes.interfaces.ExecutionTimeAnalyzer;
 
 import java.util.Random;
 
-
 public class ETAIntListInIntListOut implements ExecutionTimeAnalyzer<IntListInIntListOutAlgorithm> {
 
     private int numberOfSamples;
@@ -28,38 +27,43 @@ public class ETAIntListInIntListOut implements ExecutionTimeAnalyzer<IntListInIn
 
         Random random = new Random();
 
-    
-        for (int i = 0; i < 10; i++) {
+        // Warm-up phase
+        for (int i = 0; i < 1000; i++) {
             algorithm.execute(new Integer[]{random.nextInt(100), random.nextInt(100)});
         }
 
+        // Measurement phase
         for (int i = 0, y = scopeStart; i < numberOfSamples; i++, y += interval) {
             inputList = new Integer[y];
             for (int a = 0; a < y; a++) {
                 inputList[a] = random.nextInt(1000);
             }
 
-            startTime = System.nanoTime();
-            sortedResult = algorithm.execute(inputList);
-            stopTime = System.nanoTime();
-            executionTime = stopTime - startTime;
+            long totalExecutionTime = 0;
+            int repetitions = 40; // Number of repetitions for averaging
+
+            for (int r = 0; r < repetitions; r++) {
+                startTime = System.nanoTime();
+                sortedResult = algorithm.execute(inputList);
+                stopTime = System.nanoTime();
+                totalExecutionTime += (stopTime - startTime);
+            }
+
+            executionTime = totalExecutionTime / repetitions;
 
             StringBuilder listString = new StringBuilder();
-
-            executionTimes[i][0] = y;
-            executionTimes[i][1] = executionTime;
-
             listString.append("[");
-            for(int z = 0; z < sortedResult.length; z++) {
+            for (int z = 0; z < sortedResult.length; z++) {
                 listString.append(sortedResult[z]);
-                if(z < sortedResult.length - 1) {
+                if (z < sortedResult.length - 1) {
                     listString.append(",");
                 }
             }
             listString.append("]");
 
-
-            executionTimes[i][2] = listString;
+            executionTimes[i][0] = y;
+            executionTimes[i][1] = executionTime;
+            executionTimes[i][2] = listString.toString();
         }
 
         return executionTimes;
