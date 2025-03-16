@@ -1,8 +1,8 @@
 package eleve.hhamnnes.tutorial2.first_part;
 
-import eleve.hhamnnes.tutorial2.interfaces.MergeSortAlgorithm;
+import eleve.hhamnnes.tutorial2.interfaces.IntListInIntListOutAlgorithm;
 
-public class MergeSortIterativeAlgorithm implements MergeSortAlgorithm {
+public class MergeSortIterativeAlgorithm implements IntListInIntListOutAlgorithm {
 
     @Override
     public Integer[] execute(Integer[] list) {
