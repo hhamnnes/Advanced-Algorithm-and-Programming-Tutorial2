@@ -45,35 +45,37 @@ merge(int[] listA, int[] listB)
         #the word document.
         #In the walkthrough below, the prefix number will refer to what
         #iteration we are at in the corresponding loop. 
-        while (a < listA.length && b < listB.length) {
+        while a < listA.length && b < listB.length 
             #1: 0 < listA.length -> True AND 0 < listA.length -> True
             #2: 0 < listA.length -> True AND 1 < listA.length -> True
             #3: 0 < listA.length -> True AND 2 < listA.length -> False
 
 
-            if (listA[a] <= listB[b]) {
+            if listA[a] <= listB[b] then 
                 #1: 7 <= 2 -> False
                 #2: 7 <= 4 -> False
-                mergedList[m++] = listA[a++];
-            } else {
+                do mergedList[m++] = listA[a++]
+            else 
                 #1: mergedList = [2, , , ]
                 #2: mergedList = [2, 4, , ]
-                mergedList[m++] = listB[b++];
-            }
-        }
+                mergedList[m++] = listB[b++]
+            end if
+        end loop
+        
 
-        while (a < listA.length) {
+        while a < listA.length then 
             #1: 0 < listA.length -> True
             #2: 1 < listA.length -> True
             #3: 1 < listA.length -> False
-            mergedList[m++] = listA[a++];
+            do mergedList[m++] = listA[a++];
             #1: mergedList = [2, 4, 7, ]
             #1: mergedList = [2, 4, 7, 8]
-        }
+        end loop
 
-        while (b < listB.length) {
-            mergedList[m++] = listB[b++];
-        }
+        while b < listB.length then
+            do mergedList[m++] = listB[b++];
+        end loop
+        
 
         return mergedList;
 

@@ -12,11 +12,22 @@ public class MergeSortIterativeAlgorithm implements IntListInIntListOutAlgorithm
 
         Integer[] temp = new Integer[list.length];
 
-        for (int width = 1; width < list.length; width *= 2) {
-            for (int i = 0; i < list.length; i += 2 * width) {
+        for (int subListWidth = 1; subListWidth < list.length; subListWidth *= 2) {
+            for (int i = 0; i < list.length; i += 2 * subListWidth) {
+
                 int left = i;
-                int middle = Math.min(i + width, list.length);
-                int right = Math.min(i + 2 * width, list.length);
+                int middle = i + subListWidth;
+
+                if (middle > list.length) {
+                    middle = list.length;
+                }
+
+                int right = i + 2 * subListWidth;
+
+                if (right > list.length) {
+                    right = list.length;
+                }
+                
                 merge(list, temp, left, middle, right);
             }
         }

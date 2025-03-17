@@ -29,6 +29,8 @@ public class QuickSortRecursiveAlgorithm implements IntListInIntListOutAlgorithm
             }
         }
 
+        //According to gitHub-copilot i had to use list.toArray
+        //with new Integer[0]
         Integer[] finalHigh = execute(high.toArray(new Integer[0]));
         Integer[] finalLow = execute(low.toArray(new Integer[0]));
 
@@ -36,10 +38,22 @@ public class QuickSortRecursiveAlgorithm implements IntListInIntListOutAlgorithm
     }
 
     private Integer[] concatenate(Integer[] low, int pivot, Integer[] high) {
-        Integer[] result = new Integer[low.length + 1 + high.length];
-        System.arraycopy(low, 0, result, 0, low.length);
-        result[low.length] = pivot;
-        System.arraycopy(high, 0, result, low.length + 1, high.length);
+        
+        int listSize = low.length + 1 + high.length;
+        int resultIndex = 0;
+        
+        Integer[] result = new Integer[listSize];
+
+        for(int i = 0; i < low.length; i++) {
+            result[resultIndex++] = low[i];
+        }
+
+        result[resultIndex++] = pivot;
+
+        for(int i = 0; i < high.length; i++) {
+            result[resultIndex++] = high[i];
+        }
+
         return result;
     }
 }
