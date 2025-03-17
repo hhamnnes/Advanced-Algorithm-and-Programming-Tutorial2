@@ -1,68 +1,65 @@
 package eleve.hhamnnes.tutorial2.partThree;
 
 import eleve.hhamnnes.tutorial2.interfaces.IntListInIntListOutAlgorithm;
+import java.util.ArrayList;
 
 public class RadixSortAlgorithm implements IntListInIntListOutAlgorithm {
+    private ArrayList<ArrayList<Integer>> buckets = new ArrayList<>();
+    private int numberOfDigit;
+
+    public RadixSortAlgorithm() {
+
+        //Just to initializing all the buckets.
+        for (int i = 0; i < 10; i++) {
+            buckets.add(new ArrayList<Integer>());
+        }
+
+    }
 
     @Override
     public Integer[] execute(Integer[] list) {
-        return radixSort(list, 10); // Default to base 10
-    }
 
-    public Integer[] radixSort(Integer[] list, int radix) {
-        if (list.length == 0) {
-            return list;
+        //First step: Find the biggest number of digit in a number
+        //within the list.
+        numberOfDigit = 0;
+        for (int i = 0; i < list.length; i++) {
+            if (countDigits(list[i]) > numberOfDigit) {
+                numberOfDigit = countDigits(list[i]);
+            }
         }
+        
 
-        // Find the maximum number to know the number of digits
-        int maxNumber = findMax(list);
+        for (int z = 0; z < numberOfDigit; z++) {
+            for (ArrayList<Integer> bucket : buckets) {
+                bucket.clear();
+            }
 
-        // Perform counting sort for every digit
-        for (int exp = 1; maxNumber / exp > 0; exp *= radix) {
-            list = countingSortByDigit(list, exp, radix);
+            for (int i = 0; i < list.length; i++) {
+                int digit = getDigitAtPosition(list[i], z);
+                buckets.get(digit).add(list[i]);
+            }
+
+            int index = 0;
+            for (ArrayList<Integer> bucket : buckets) {
+                for (int number : bucket) {
+                    list[index++] = number;
+                }
+            }
         }
 
         return list;
     }
 
-    private int findMax(Integer[] list) {
-        int max = list[0];
-        for (int i = 1; i < list.length; i++) {
-            if (list[i] > max) {
-                max = list[i];
-            }
+    //To find how many digit there are in for one number in the list.
+    public static int countDigits(int number) {
+        if (number == 0) {
+            return 1;
         }
-        return max;
+        return (int) Math.log10(Math.abs(number)) + 1;
     }
 
-    private Integer[] countingSortByDigit(Integer[] list, int exp, int radix) {
-        int n = list.length;
-        Integer[] output = new Integer[n];
-        int[] count = new int[radix];
-
-        // Initialize count array with all zeros
-        for (int i = 0; i < radix; i++) {
-            count[i] = 0;
-        }
-
-        // Store count of occurrences in count[]
-        for (int i = 0; i < n; i++) {
-            int digit = (list[i] / exp) % radix;
-            count[digit]++;
-        }
-
-        // Change count[i] so that count[i] contains the actual position of this digit in output[]
-        for (int i = 1; i < radix; i++) {
-            count[i] += count[i - 1];
-        }
-
-        // Build the output array
-        for (int i = n - 1; i >= 0; i--) {
-            int digit = (list[i] / exp) % radix;
-            output[count[digit] - 1] = list[i];
-            count[digit]--;
-        }
-
-        return output;
+    //To find at digit at a specific position.
+    public static int getDigitAtPosition(int number, int position) {
+        return (number / (int) Math.pow(10, position)) % 10;
     }
 }
